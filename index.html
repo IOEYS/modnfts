@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>modnfts.com - Utility-Driven NFT Marketplace & Name Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .handle-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .handle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        @
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">modnfts.com</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
+                    <a href="#marketplace" class="text-gray-600 hover:text-gray-900">Marketplace</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-gray-900">Pricing</a>
+                    <a href="#api" class="text-gray-600 hover:text-gray-900">API</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="connectWalletBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center animate-fade-in">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Your Identity,<br>
+                    <span class="typing-effect">Everywhere</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
+                    Transform complex wallet addresses into simple @handles. 
+                    One identity across the entire internet and blockchain ecosystem.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="registerHandleBtn" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
+                        Register Your Handle
+                    </button>
+                    <button class="glass-effect text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/20 transition">
+                        Explore Marketplace
+                    </button>
+                </div>
+                
+                <!-- Search Box -->
+                <div class="mt-12 max-w-2xl mx-auto">
+                    <div class="bg-white rounded-xl p-2 shadow-xl">
+                        <div class="flex items-center">
+                            <span class="text-3xl px-4 text-gray-400">@</span>
+                            <input 
+                                type="text" 
+                                id="handleSearchInput"
+                                placeholder="Search for your perfect handle..."
+                                class="flex-1 text-gray-900 text-lg px-2 py-3 outline-none"
+                            >
+                            <button id="searchBtn" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-white/80 mt-4 text-sm">
+                        <span id="availableHandles">10,247</span> handles registered • 
+                        <span id="resolvesToday">1.2M</span> resolves today
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose modnfts?</h2>
+                <p class="text-xl text-gray-600">The most comprehensive name service for Web3 and beyond</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 handle-card">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        🌐
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Internet-Wide Resolution</h3>
+                    <p class="text-gray-600">
+                        Your @handle works everywhere - browsers, email, social media, and all blockchain networks.
+                    </p>
+                </div>
+                
+                <div class="p-8 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 handle-card">
+                    <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        🔗
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Multi-Chain Support</h3>
+                    <p class="text-gray-600">
+                        Connect multiple wallet addresses across Ethereum, Polygon, BSC, and your custom blockchain.
+                    </p>
+                </div>
+                
+                <div class="p-8 rounded-xl bg-gradient-to-br from-green-50 to-teal-50 handle-card">
+                    <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        💎
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">NFT Ownership</h3>
+                    <p class="text-gray-600">
+                        True ownership with NFT-backed handles. Trade, sell, or transfer your digital identity.
+                    </p>
+                </div>
+                
+                <div class="p-8 rounded-xl bg-gradient-to-br from-yellow-50 to-orange-50 handle-card">
+                    <div class="w-12 h-12 bg-yellow-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        ⚡
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Instant Resolution</h3>
+                    <p class="text-gray-600">
+                        Lightning-fast DNS resolution with 99.9% uptime and global CDN distribution.
+                    </p>
+                </div>
+                
+                <div class="p-8 rounded-xl bg-gradient-to-br from-red-50 to-pink-50 handle-card">
+                    <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        📧
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Email Integration</h3>
+                    <p class="text-gray-600">
+                        Get a personalized email address with automatic forwarding to your inbox.
+                    </p>
+                </div>
+                
+                <div class="p-8 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 handle-card">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-2xl mb-4">
+                        🛡️
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Secure & Private</h3>
+                    <p class="text-gray-600">
+                        Military-grade encryption, blockchain security, and zero-knowledge proofs protect your identity.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-xl text-gray-600">One-time payment. No recurring fees. True ownership.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-lg border-2 border-gray-200">
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Community</h3>
+                        <div class="text-4xl font-bold text-gray-900 mb-1">$8</div>
+                        <p class="text-sm text-gray-600">13+ characters</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Basic resolution
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> 1 chain address
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Community features
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-100 text-gray-900 px-4 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
+                        Register
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg border-2 border-indigo-200">
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Standard</h3>
+                        <div class="text-4xl font-bold text-gray-900 mb-1">$38</div>
+                        <p class="text-sm text-gray-600">7-12 characters</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> All Community features
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> 5 chain addresses
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Email forwarding
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                        Register
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg border-2 border-purple-200 relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        POPULAR
+                    </div>
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Professional</h3>
+                        <div class="text-4xl font-bold text-gray-900 mb-1">$88</div>
+                        <p class="text-sm text-gray-600">4-6 characters</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> All Standard features
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Unlimited chains
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Social integration
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="text-green-500 mr-2">✓</span> Priority support
+                        </li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                        Register
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-xl p-6 shadow-lg border-2 border-yellow-300">
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Premium</h3>
+                        <div class="text-4xl font-bold text-gray-900 mb-1">$10K+</di                        <div class="text-4xl font-bold text-gray-900 mb-1">$8800+</div>             </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-900">
+                            <span class="text-yellow-600 mr-2">★</span> Ultimate prestige
+                        </li>
+                        <li class="flex items-center text-sm text-gray-900">
+                            <span class="text-yellow-600 mr-2">★</span> All features
+                        </li>
+                        <li class="flex items-center text-sm text-gray-900">
+                            <span class="text-yellow-600 mr-2">★</span> VIP support
+                        </li>
+                        <li class="flex items-center text-sm text-gray-900">
+                            <span class="text-yellow-600 mr-2">★</span> Custom branding
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-900 text-white px-4 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
+                        Inquire
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Register Handle</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Handle</label>
+                    <div class="flex items-center border-2 border-gray-300 rounded-lg focus-within:border-indigo-600">
+                        <span class="px-4 text-2xl text-gray-400">@</span>
+                        <input 
+                            type="text" 
+                            id="handleInput"
+                            placeholder="yourname"
+                            class="flex-1 px-2 py-3 outline-none text-lg"
+                        >
+                    </div>
+                    <p id="handleAvailability" class="mt-2 text-sm"></p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                    <div class="text-3xl font-bold text-gray-900" id="handlePrice">$0.00</div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Wallet Address</label>
+                    <input 
+                        type="text" 
+                        id="walletAddress"
+                        placeholder="0x..."
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg outline-none focus:border-indigo-600"
+                        readonly
+                    >
+                </div>
+                
+                <button id="confirmRegisterBtn" class="w-full bg-indigo-600 text-white px-6 py-4 rounded-lg font-semibold text-lg hover:bg-indigo-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    Register Handle
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center font-bold">@</div>
+                        <span class="font-bold">modnfts.com</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Your identity, everywhere. The future of digital naming and Web3 integration.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Features</a></li>
+                        <li><a href="#" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white">Marketplace</a></li>
+                        <li><a href="#" class="hover:text-white">Browser Extension</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Developers</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white">API Reference</a></li>
+                        <li><a href="#" class="hover:text-white">GitHub</a></li>
+                        <li><a href="#" class="hover:text-white">Smart Contracts</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Community</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Discord</a></li>
+                        <li><a href="#" class="hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="hover:text-white">Blog</a></li>
+                        <li><a href="#" class="hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 modnfts.com. All rights reserved. Built with ❤️ for Web3.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Web3 Integration
+        let web3;
+        let userAddress;
+        const API_BASE = 'https://api.modnfts.com/api/v1';
+
+        // Connect Wallet
+        document.getElementById('connectWalletBtn').addEventListener('click', async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    web3 = new Web3(window.ethereum);
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAddress = accounts[0];
+                    
+                    document.getElementById('connectWalletBtn').textContent = 
+                        userAddress.slice(0, 6) + '...' + userAddress.slice(-4);
+                    document.getElementById('walletAddress').value = userAddress;
+                } catch (error) {
+                    console.error('Wallet connection failed:', error);
+                    alert('Failed to connect wallet');
+                }
+            } else {
+                alert('Please install MetaMask or another Web3 wallet');
+            }
+        });
+
+        // Handle Search
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const handle = document.getElementById('handleSearchInput').value;
+            if (!handle) return;
+            
+            const searchHandle = handle.startsWith('@') ? handle : '@' + handle;
+            window.location.href = `https://${searchHandle.slice(1)}.modnfts.com`;
+        });
+
+        // Open Registration Modal
+        document.getElementById('registerHandleBtn').addEventListener('click', () => {
+            document.getElementById('registrationModal').classList.remove('hidden');
+            document.getElementById('registrationModal').classList.add('flex');
+        });
+
+        // Close Modal
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('registrationModal').classList.add('hidden');
+            document.getElementById('registrationModal').classList.remove('flex');
+        });
+
+        // Handle Input Change
+        let checkTimeout;
+        document.getElementById('handleInput').addEventListener('input', (e) => {
+            clearTimeout(checkTimeout);
+            const handle = e.target.value;
+            
+            checkTimeout = setTimeout(async () => {
+                if (handle.length > 0) {
+                    await checkHandleAvailability('@' + handle);
+                }
+            }, 500);
+        });
+
+        async function checkHandleAvailability(handle) {
+            try {
+                const response = await fetch(`${API_BASE}/handle/resolve/${handle}`);
+                const availability = document.getElementById('handleAvailability');
+                
+                if (response.ok) {
+                    availability.textContent = '❌ Handle already taken';
+                    availability.className = 'mt-2 text-sm text-red-600';
+                    document.getElementById('confirmRegisterBtn').disabled = true;
+                } else {
+                    availability.textContent = '✅ Handle available!';
+                    availability.className = 'mt-2 text-sm text-green-600';
+                    document.getElementById('confirmRegisterBtn').disabled = false;
+                    
+                    // Calculate price
+                    const price = calculatePrice(handle.slice(1));
+                    document.getElementById('handlePrice').textContent = '$' + price.toFixed(2);
+                }
+            } catch (error) {
+                console.error('Availability check failed:', error);
+            }
+        }
+
+        function calculatePrice(handle) {
+            const length = handle.length;
+            if (length <= 3) return 10000;
+            if (length <= 6) return 100;
+            if (length <= 12) return 10;
+            return 1;
+        }
+
+        // Confirm Registration
+        document.getElementById('confirmRegisterBtn').addEventListener('click', async () => {
+            if (!userAddress) {
+                alert('Please connect your wallet first');
+                return;
+            }
+
+            const handle = '@' + document.getElementById('handleInput').value;
+            const message = `Register ${handle} on modnfts.com`;
+            
+            try {
+                const signature = await web3.eth.personal.sign(message, userAddress);
+                
+                const response = await fetch(`${API_BASE}/handle/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        handle,
+                        wallet_address: userAddress,
+                        signature,
+                        chain_addresses: {},
+                        social_links: {}
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(`Success! Your handle ${handle} is registered.`);
+                    window.location.href = `https://${data.subdomain}`;
+                } else {
+                    const error = await response.json();
+                    alert('Registration failed: ' + error.detail);
+                }
+            } catch (error) {
+                console.error('Registration failed:', error);
+                alert('Registration failed. Please try again.');
+            }
+        });
+
+        // Load stats
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('availableHandles').textContent = 
+                        stats.total_handles.toLocaleString();
+                    document.getElementById('resolvesToday').textContent = 
+                        (stats.resolves_today / 1000000).toFixed(1) + 'M';
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Initialize
+        loadStats();
+        setInterval(loadStats, 60000); // Update every minute
+    </script>
+</body>
+</html>
